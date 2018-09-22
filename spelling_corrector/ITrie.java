@@ -20,35 +20,35 @@ public interface ITrie {
 	 * @return A reference to the trie node that represents the word,
 	 * 			or null if the word is not in the trie
 	 */
-	public INode find(String word);
+	// public INode find(String word);
 	
 	/**
 	 * Returns the number of unique words in the trie
 	 * 
 	 * @return The number of unique words in the trie
 	 */
-	public int getWordCount();
+	// public int getWordCount();
 	
 	/**
 	 * Returns the number of nodes in the trie
 	 * 
 	 * @return The number of nodes in the trie
 	 */
-	public int getNodeCount();
+	// public int getNodeCount();
 	
 	/**
 	 * The toString specification is as follows:
 	 * For each word, in alphabetical order:
 	 * <word>\n
 	 */
-	@Override
-	public String toString();
-	
-	@Override
-	public int hashCode();
-	
-	@Override
-	public boolean equals(Object o);
+	// @Override
+	// public String toString();
+	// 
+	// @Override
+	// public int hashCode();
+	// 
+	// @Override
+	// public boolean equals(Object o);
 
 	/**
 	 * Your trie node class should implement the ITrie.INode interface
@@ -60,7 +60,7 @@ public interface ITrie {
 		 * 
 		 * @return The frequency count for the word represented by the node
 		 */
-		public int getValue();
+		// public int getValue();
 	}
 	
 	/*
