@@ -25,7 +25,7 @@ public class Trie implements ITrie {
          if (currentNode.nodes[letterMap.get(characters[i])] == null) {
             currentNode.nodes[letterMap.get(characters[i])] = new Node();
             currentNode = currentNode.nodes[letterMap.get(characters[i])];
-            currentNode.SetLetter(Character.toString(characters[i]));
+            //currentNode.SetLetter(Character.toString(characters[i]));
             numNodes++;
          }
          
@@ -69,6 +69,10 @@ public class Trie implements ITrie {
 	public int getNodeCount() {
       return numNodes;
    }
+   
+   public Node GetRoot() {
+      return root;
+   }
 	
 	/**
 	 * The toString specification is as follows:
@@ -85,16 +89,31 @@ public class Trie implements ITrie {
    // 
    // }
 	
-	// @Override
-	// public boolean equals(Object o) { //FIXME
-   // 
-   // }
+	@Override
+	public boolean equals(Object o) {
+      if (this == o) {
+         return true;
+      }
+      
+      if (!(o instanceof Trie)) {
+         return false;
+      }
+      
+      Trie trie = (Trie) o;
+      
+      if (!this.GetRoot().equals(trie.GetRoot())) {
+         return false;
+      }
+      return true;
+   }
    
 	public class Node implements ITrie.INode {
       public Node[] nodes = new Node[26]; 
       private int count = 0;
       
+      public Node() {}
       
+      //*****************************************
       private String letter = "N/A";
       public void SetLetter(String letter) {
          this.letter = letter;
@@ -111,8 +130,7 @@ public class Trie implements ITrie {
          }
          System.out.println("\n");
       }
-      
-      public Node() {}
+      //*****************************************
          
       public void IncrementCount() {
          count++;
@@ -125,6 +143,37 @@ public class Trie implements ITrie {
 		 */
 		public int getValue() {
          return count;
+      }
+      
+      @Override
+      public boolean equals(Object o) {
+         if (o == this) {
+            return true;
+         }
+         
+         if (!(o instanceof Node)) {
+            return false;
+         }
+         
+         Node node = (Node) o;
+         
+         if (this.count != node.getValue()) {
+            return false;
+         }
+         
+         if (this.nodes.length != node.nodes.length) {
+            return false;
+         }
+         
+         for (int i = 0; i < this.nodes.length; i++) {
+            if (this.nodes[i] == null && node.nodes[i] == null) {
+               continue;
+            }
+            if (!this.nodes[i].equals(node.nodes[i])) {
+               return false;
+            }
+         }
+         return true;
       }
 	}
    
@@ -160,6 +209,9 @@ public class Trie implements ITrie {
    
    public Trie() {
       CreateLetterMap();
+      
+      //*****************************************
       root.SetLetter("root");
+      //*****************************************
    }
 }

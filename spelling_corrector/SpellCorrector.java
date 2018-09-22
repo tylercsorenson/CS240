@@ -5,6 +5,7 @@ import java.util.*;
 
 public class SpellCorrector implements ISpellCorrector {
    private Trie dictionary = new Trie();
+   private Trie secondDictionary = new Trie();
    
    public SpellCorrector() {}
 
@@ -22,10 +23,6 @@ public class SpellCorrector implements ISpellCorrector {
          while (input.hasNext()) {
             dictionary.add(input.next());
          }
-         
-         System.out.println(dictionary.getNodeCount());
-         System.out.println(dictionary.getWordCount());
-         
          input.close();
       }
       catch (Exception exception) {
