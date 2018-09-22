@@ -24,6 +24,8 @@ public class SpellCorrector implements ISpellCorrector {
             dictionary.add(input.next());
          }
          input.close();
+         
+         System.out.println(dictionary.hashCode());
       }
       catch (Exception exception) {
          exception.printStackTrace();

@@ -5,6 +5,7 @@ import java.util.*;
 public class Trie implements ITrie {
    private Node root = new Node();
    private HashMap<Character, Integer> letterMap;
+   private HashMap<Integer, Character> reverseLetterMap;
    private int numNodes = 1;
    private int numWords = 0;
    
@@ -15,7 +16,7 @@ public class Trie implements ITrie {
 	 * 
 	 * @param word The word being added to the trie
 	 */
-	public void add(String word) { //FIXME
+	public void add(String word) {
       char[] characters = word.toCharArray();
       Node currentNode = root;
       
@@ -79,15 +80,17 @@ public class Trie implements ITrie {
 	 * For each word, in alphabetical order:
 	 * <word>\n
 	 */
-	// @Override
-	// public String toString() { //FIXME
-   // 
-   // }
+	@Override
+	public String toString() { //FIXME
+      
+   }
 	
-	// @Override
-	// public int hashCode() { //FIXME
-   // 
-   // }
+	@Override
+	public int hashCode() {
+      StringBuilder hashInput = new StringBuilder();
+      hashInput.append(root.GetHashString());
+      return hashInput.toString().hashCode();
+   }
 	
 	@Override
 	public boolean equals(Object o) {
@@ -112,6 +115,20 @@ public class Trie implements ITrie {
       private int count = 0;
       
       public Node() {}
+      
+      public String GetHashString() {
+         StringBuilder hashString = new StringBuilder();
+         hashString.append(this.count);
+         
+         for (int i = 0; i < 26; ++i) {
+            if (this.nodes[i] == null) {
+               continue;
+            }
+            hashString.append(reverseLetterMap.get(i));
+            hashString.append(this.nodes[i].GetHashString());
+         }
+         return hashString.toString();
+      }
       
       //*****************************************
       private String letter = "N/A";
@@ -177,8 +194,9 @@ public class Trie implements ITrie {
       }
 	}
    
-   private void CreateLetterMap() {
+   private void CreateLetterMaps() {
       letterMap = new HashMap<Character, Integer>();
+      reverseLetterMap = new HashMap<Integer, Character>();
       letterMap.put('a', 0);
       letterMap.put('b', 1);
       letterMap.put('c', 2);
@@ -205,10 +223,36 @@ public class Trie implements ITrie {
       letterMap.put('x', 23);
       letterMap.put('y', 24);
       letterMap.put('z', 25);
+      reverseLetterMap.put(0, 'a');
+      reverseLetterMap.put(1, 'b');
+      reverseLetterMap.put(2, 'c');
+      reverseLetterMap.put(3, 'd');
+      reverseLetterMap.put(4, 'e');
+      reverseLetterMap.put(5, 'f');
+      reverseLetterMap.put(6, 'g');
+      reverseLetterMap.put(7, 'h');
+      reverseLetterMap.put(8, 'i');
+      reverseLetterMap.put(9, 'j');
+      reverseLetterMap.put(10, 'k');
+      reverseLetterMap.put(11, 'l');
+      reverseLetterMap.put(12, 'm');
+      reverseLetterMap.put(13, 'n');
+      reverseLetterMap.put(14, 'o');
+      reverseLetterMap.put(15, 'p');
+      reverseLetterMap.put(16, 'q');
+      reverseLetterMap.put(17, 'r');
+      reverseLetterMap.put(18, 's');
+      reverseLetterMap.put(19, 't');
+      reverseLetterMap.put(20, 'u');
+      reverseLetterMap.put(21, 'v');
+      reverseLetterMap.put(22, 'w');
+      reverseLetterMap.put(23, 'x');
+      reverseLetterMap.put(24, 'y');
+      reverseLetterMap.put(25, 'z');
    }
    
    public Trie() {
-      CreateLetterMap();
+      CreateLetterMaps();
       
       //*****************************************
       root.SetLetter("root");
