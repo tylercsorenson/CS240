@@ -17,11 +17,14 @@ public class SpellCorrector implements ISpellCorrector {
 	public void useDictionary(String dictionaryFileName) throws IOException {
       try {
          Scanner input = new Scanner(new File(dictionaryFileName));
-         input.useDelimiter("([a-z]|[A-Z])+");
+         input.useDelimiter("[^a-zA-Z]");
          
          while (input.hasNext()) {
             dictionary.add(input.next());
          }
+         
+         System.out.println(dictionary.getNodeCount());
+         System.out.println(dictionary.getWordCount());
          
          input.close();
       }

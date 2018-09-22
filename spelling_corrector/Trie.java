@@ -5,6 +5,8 @@ import java.util.*;
 public class Trie implements ITrie {
    private Node root = new Node();
    private HashMap<Character, Integer> letterMap;
+   private int numNodes = 1;
+   private int numWords = 0;
    
    //Constructor at bottom of class, simply creates the letterMap
 
@@ -15,10 +17,26 @@ public class Trie implements ITrie {
 	 */
 	public void add(String word) { //FIXME
       char[] characters = word.toCharArray();
+      Node currentNode = root;
       
       for (int i = 0; i < characters.length; ++i) {
          characters[i] = Character.toLowerCase(characters[i]);
          
+         if (currentNode.nodes[letterMap.get(characters[i])] == null) {
+            currentNode.nodes[letterMap.get(characters[i])] = new Node();
+            currentNode = currentNode.nodes[letterMap.get(characters[i])];
+            currentNode.SetLetter(Character.toString(characters[i]));
+            numNodes++;
+         }
+         
+         else {
+            currentNode = currentNode.nodes[letterMap.get(characters[i])];
+         }
+         
+         if (i == characters.length - 1) {
+            currentNode.IncrementCount();
+            numWords++;
+         }
       }
    }
 	
@@ -39,18 +57,18 @@ public class Trie implements ITrie {
 	 * 
 	 * @return The number of unique words in the trie
 	 */
-	// public int getWordCount() { //FIXME
-   // 
-   // }
+	public int getWordCount() {
+      return numWords;
+   }
 	
 	/**
 	 * Returns the number of nodes in the trie
 	 * 
 	 * @return The number of nodes in the trie
 	 */
-	// public int getNodeCount() { //FIXME
-   // 
-   // }
+	public int getNodeCount() {
+      return numNodes;
+   }
 	
 	/**
 	 * The toString specification is as follows:
@@ -73,8 +91,26 @@ public class Trie implements ITrie {
    // }
    
 	public class Node implements ITrie.INode {
-      private Node[] nodes = new Node[26]; 
+      public Node[] nodes = new Node[26]; 
       private int count = 0;
+      
+      
+      private String letter = "N/A";
+      public void SetLetter(String letter) {
+         this.letter = letter;
+      }
+      public String GetLetter() {
+         return letter;
+      }
+      public void PrintNode() {
+         System.out.println(letter + ": " + count);
+         for (int i = 0; i < nodes.length; ++i) {
+            if (nodes[i] != null) {
+               System.out.println(nodes[i].GetLetter() + ": " + nodes[i].getValue());
+            }
+         }
+         System.out.println("\n");
+      }
       
       public Node() {}
          
@@ -124,5 +160,6 @@ public class Trie implements ITrie {
    
    public Trie() {
       CreateLetterMap();
+      root.SetLetter("root");
    }
 }
