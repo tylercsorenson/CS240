@@ -26,7 +26,7 @@ public class Trie implements ITrie {
          if (currentNode.nodes[letterMap.get(characters[i])] == null) {
             currentNode.nodes[letterMap.get(characters[i])] = new Node();
             currentNode = currentNode.nodes[letterMap.get(characters[i])];
-            //currentNode.SetLetter(Character.toString(characters[i]));
+            currentNode.SetLetter(Character.toString(characters[i]));
             numNodes++;
          }
          
@@ -49,9 +49,18 @@ public class Trie implements ITrie {
 	 * @return A reference to the trie node that represents the word,
 	 * 			or null if the word is not in the trie
 	 */
-	// public ITrie.INode find(String word) { //FIXME
-   // 
-   // }
+	public ITrie.INode find(String word) { //FIXME
+      char[] characters = word.toCharArray();
+      Node currentNode = root;
+      
+      for (int i = 0; i < characters.length; ++i) {
+         if (currentNode.nodes[letterMap.get(characters[i])] == null) {
+            return null;
+         }
+         currentNode = currentNode.nodes[letterMap.get(characters[i])];
+      }
+      return currentNode;
+   }
 	
 	/**
 	 * Returns the number of unique words in the trie
@@ -81,8 +90,12 @@ public class Trie implements ITrie {
 	 * <word>\n
 	 */
 	@Override
-	public String toString() { //FIXME
+	public String toString() {
+      StringBuilder string = new StringBuilder();
+      StringBuilder currentPath = new StringBuilder();
+      root.AddNextWord(string, currentPath);
       
+      return string.toString();
    }
 	
 	@Override
@@ -129,6 +142,24 @@ public class Trie implements ITrie {
          }
          return hashString.toString();
       }
+      
+      public void AddNextWord(StringBuilder string, StringBuilder currentPath) {
+         if (count > 0) {
+            string.append(currentPath);
+            string.append("\n");
+         }
+         
+         for (int i = 0; i < 26; ++i) {
+            if (this.nodes[i] != null) {
+               currentPath.append(reverseLetterMap.get(i));
+               this.nodes[i].AddNextWord(string, currentPath);
+            }
+         }
+         
+         if (currentPath.length() > 0) {
+            currentPath.deleteCharAt(currentPath.length() - 1);
+         }
+      } 
       
       //*****************************************
       private String letter = "N/A";
