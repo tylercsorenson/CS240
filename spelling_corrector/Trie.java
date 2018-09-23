@@ -49,11 +49,13 @@ public class Trie implements ITrie {
 	 * @return A reference to the trie node that represents the word,
 	 * 			or null if the word is not in the trie
 	 */
-	public ITrie.INode find(String word) { //FIXME
+	public ITrie.INode find(String word) {
       char[] characters = word.toCharArray();
       Node currentNode = root;
       
       for (int i = 0; i < characters.length; ++i) {
+         characters[i] = Character.toLowerCase(characters[i]);
+         
          if (currentNode.nodes[letterMap.get(characters[i])] == null) {
             return null;
          }

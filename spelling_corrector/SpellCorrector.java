@@ -37,8 +37,10 @@ public class SpellCorrector implements ISpellCorrector {
 	 * @return The suggestion or null if there is no similar word in the dictionary
 	 */
 	public String suggestSimilarWord(String inputWord) { //FIXME
-      String suggestedWord = new String();
-      return suggestedWord;
+      if (dictionary.find(inputWord) != null) {
+         return inputWord.toLowerCase();
+      }
+      return null;
    }
 
 }
