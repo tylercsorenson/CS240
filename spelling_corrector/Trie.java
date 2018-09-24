@@ -61,6 +61,10 @@ public class Trie implements ITrie {
          }
          currentNode = currentNode.nodes[letterMap.get(characters[i])];
       }
+      
+      if (currentNode.getValue() == 0) {
+         return null;
+      }
       return currentNode;
    }
 	

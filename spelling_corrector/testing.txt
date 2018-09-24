@@ -1,9 +1,0 @@
-bat
-ab
-aaaaa
-aaaab
-a
-bb
-z
-hello
-aac
