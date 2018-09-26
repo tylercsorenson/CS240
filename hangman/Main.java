@@ -17,18 +17,13 @@ public class Main {
          EvilHangmanGame hangman = new EvilHangmanGame();
          File dictionaryFile = new File(args[0]);
          int wordLength = Integer.parseInt(args[1]);
-         
+         int numGuesses = Integer.parseInt(args[2]);
+      
          hangman.startGame(dictionaryFile, wordLength);
-         hangman.RunGame();
+         hangman.RunGame(numGuesses, wordLength);
       }
       catch (IllegalArgumentsException e) {
          System.out.println("Usage: java hangman.Main <dictionary file> <word length> <guesses>");
       }
    }
 }
-
-
-/* errors to handle
-command line arguments
-cant find file
-*/
