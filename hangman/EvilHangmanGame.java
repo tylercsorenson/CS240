@@ -122,63 +122,101 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       
       if (wordGroups.containsKey("NONE")) {
          numGuesses--;
+         System.out.println("Sorry, there are no " + guess + "\'s");
          return wordGroups.get("NONE");
       }
       
       else if (wordGroups.keySet().size() > 1) {
-         int maxKeyLength = 0;
+         int minKeyLength = 100;
          iter = wordGroups.keySet().iterator();
          while (iter.hasNext()) {
+            //System.out.println("1");
             String nextKey = iter.next();
-            if (nextKey.length() > maxKeyLength) {
-               maxKeyLength = nextKey.length();
+            if (nextKey.length() < minKeyLength) {
+               minKeyLength = nextKey.length();
             }
          }
          
          iter = wordGroups.keySet().iterator();
          while (iter.hasNext()) {
+            //System.out.println("2");
             String nextKey = iter.next();
-            if (nextKey.length() < maxKeyLength) {
+            if (nextKey.length() > minKeyLength) {
                iter.remove();
             }
          }
          
-         for (String key : wordGroups.keySet()) {
-            System.out.println("key: " + key);
-            for (String nextWord : wordGroups.get(key)) {
-               System.out.println(nextWord);
-            }
-         }
-         
-         int rightmostLetter = -1;
+         int maxRightmostLetter = -1;
          Set<Integer> positionsExcluded= new TreeSet<Integer>();
          while (wordGroups.keySet().size() > 1) {
-            rightmostLetter = -1;
+            
+            //System.out.println("3");
+            maxRightmostLetter = -1;
+            iter = wordGroups.keySet().iterator();
+            
+            while (iter.hasNext()) { //get rightmostLetter (not in excluded set)
+               String nextKey = iter.next();
+               for (int i = nextKey.length() - 1; i >= 0; --i) {
+                  if (!positionsExcluded.contains(nextKey.charAt(i) - '0')) {
+                     if (nextKey.charAt(i) - '0' > maxRightmostLetter) {
+                        maxRightmostLetter = nextKey.charAt(i) - '0';
+                     }
+                     break;
+                  }
+               }
+            }
+            
+            iter = wordGroups.keySet().iterator();
+            while (iter.hasNext()) {
+               String nextKey = iter.next();
+               for (int i = nextKey.length() - 1; i >= 0; --i) {
+                  if (!positionsExcluded.contains(nextKey.charAt(i) - '0')) {
+                     if (nextKey.charAt(i) - '0' < maxRightmostLetter) {
+                        iter.remove();
+                     }
+                     break;
+                  }
+               }
+            }
+            positionsExcluded.add(maxRightmostLetter);
+            //for each key, if key's rightmostletter (not in exluded set) is less than max, delete
+            
             //If there is still more than one group, choose the one with the next rightmost letter. Repeat this step (step 4) until a group is chosen.
          }
+         //System.out.println(wordGroups.keySet().size());
          
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
          for (int i = 0; i < nextKey.length(); ++i) {
             word.setCharAt(nextKey.charAt(i) - '0', guess);
          }
+         
+         System.out.printf("Yes, there");
+         if (nextKey.length() == 1) {
+            System.out.printf(" is ");
+         }
+         else {
+            System.out.printf(" are ");
+         }
+         
+         System.out.println(nextKey.length() + " " + String.valueOf(guess) + "\'s");
          return wordGroups.get(nextKey);
       }
       
       else {
-         
-         
-         for (String key : wordGroups.keySet()) {
-            System.out.println("key: " + key);
-            for (String nextWord : wordGroups.get(key)) {
-               System.out.println(nextWord);
-            }
-         }
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
          for (int i = 0; i < nextKey.length(); ++i) {
             word.setCharAt(nextKey.charAt(i) - '0', guess);
          }
+         System.out.printf("Yes, there");
+         if (nextKey.length() == 1) {
+            System.out.println(" is " + nextKey.length() + " " + String.valueOf(guess));
+         }
+         else {
+            System.out.println(" are " + nextKey.length() + " " + String.valueOf(guess) + "\'s");
+         }
+         
          return wordGroups.get(nextKey);
       }
    }
@@ -242,32 +280,50 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       } while (badInput);
       
       try {
+         /*
          System.out.println("Original");
          for (String Word : dictionarySet) {
-            System.out.println(Word);
-         }
-         dictionarySet = makeGuess(guess);
-         System.out.println("\nChanged");
-         for (String Word : dictionarySet) {
-            System.out.println(Word);
-         }
+         System.out.println(Word);
       }
-      catch (GuessAlreadyMadeException e) {
-         System.out.println("You already made that guess...");
-      }
+      */
+      dictionarySet = makeGuess(guess);
+      // for (String nextWord : dictionarySet) {
+      //    System.out.println(nextWord);
+      // }
       
-      System.out.println();
+      /*
+      System.out.println("\nChanged");
+      for (String Word : dictionarySet) {
+      System.out.println(Word);
+   }
+   */
+}
+catch (GuessAlreadyMadeException e) {
+   System.out.println("You already made that guess...");
+}
+
+System.out.println();
+}
+
+public void RunGame(int wordLength, int numberOfGuesses) {
+   numGuesses = numberOfGuesses;
+   
+   for (int i = 0; i < wordLength; ++i) {
+      word.append('-');
    }
    
-   public void RunGame(int wordLength, int numberOfGuesses) {
-      numGuesses = numberOfGuesses;
-      
-      for (int i = 0; i < wordLength; ++i) {
-         word.append('-');
-      }
-      
-      while (numGuesses > 0) {
-         NextTurn();
-      }
+   while (numGuesses > 0) {
+      NextTurn();
    }
+   if (word.indexOf("-") == -1) {
+      System.out.println("You Win!");
+      System.out.println(word);
+   }
+   else {
+      System.out.println("You lose!");
+      Iterator<String> iter = dictionarySet.iterator();
+      String result = iter.next();
+      System.out.println("The word was: " + result);
+   }
+}
 }

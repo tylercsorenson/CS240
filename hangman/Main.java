@@ -10,7 +10,7 @@ public class Main {
    
    public static void main(String[] args) throws Exception {
       try {
-         if (args.length != 3 || !args[1].matches("[1-9]+") || !args[2].matches("[1-9]+")) {
+         if (args.length != 3 || !args[1].matches("[0-9]+") || !args[2].matches("[0-9]+") || Integer.parseInt(args[1]) < 2 || Integer.parseInt(args[2]) < 1) {
             throw new IllegalArgumentsException();
          }
          
