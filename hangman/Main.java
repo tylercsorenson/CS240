@@ -20,7 +20,7 @@ public class Main {
          int numGuesses = Integer.parseInt(args[2]);
       
          hangman.startGame(dictionaryFile, wordLength);
-         hangman.RunGame(numGuesses, wordLength);
+         hangman.RunGame(wordLength, numGuesses);
       }
       catch (IllegalArgumentsException e) {
          System.out.println("Usage: java hangman.Main <dictionary file> <word length> <guesses>");
