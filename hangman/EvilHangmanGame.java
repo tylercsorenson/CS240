@@ -88,6 +88,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          System.out.println("Dictionary file not found...");
       }
       catch (InvalidCharactersException e) {
+         dictionarySet.clear();
          System.out.println("Invalid characters found in dictionary file...");
       }
       catch (EmptyDictionaryFileException e) {
@@ -114,12 +115,14 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       int foundIndex = 0;
       
       for (String nextWord : dictionarySet) {
+         System.out.println("nextWord: " + nextWord);
          index = 0;
          foundIndex = 0;
          StringBuilder key = new StringBuilder();
          
          while (index != -1) {
             foundIndex = nextWord.indexOf(guess, index);
+            System.out.println("foundIndex: " + foundIndex);
             if (foundIndex != -1) {
                key.append(foundIndex);
                key.append(",");

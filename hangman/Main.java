@@ -13,6 +13,9 @@ public class Main {
    public static class IllegalArgumentsException extends Exception {
    }
    
+   public static class EmptyDictionarySetException extends Exception {
+   }   
+   
    public static void main(String[] args) throws Exception {
       try {
          if (args.length != 3 || !args[1].matches("[0-9]+") || !args[2].matches("[0-9]+") || Integer.parseInt(args[1]) < 2 || Integer.parseInt(args[2]) < 1) {
@@ -28,6 +31,9 @@ public class Main {
          hangman.startGame(dictionaryFile, wordLength);
          
          while (numGuesses > 0) {
+            if (hangman.GetDictionarySet().isEmpty()) {
+               throw new EmptyDictionarySetException();
+            }
             word = hangman.GetWord();
             
             char guess = ' ';
@@ -111,6 +117,9 @@ public class Main {
       }
       catch (IllegalArgumentsException e) {
          System.out.println("Usage: java hangman.Main <dictionary file> <word length> <guesses>");
+      }
+      catch (EmptyDictionarySetException e) {
+         System.out.println("Dictionary is empty...");
       }
    }
 }
