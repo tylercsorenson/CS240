@@ -61,7 +61,7 @@ public class Main {
             do {
                System.out.printf("Enter guess: ");
                if (userInput.hasNext("[a-zA-Z]")) {
-                  guess = userInput.next().charAt(0);
+                  guess = Character.toLowerCase(userInput.next().charAt(0));
                   if (guessesMade.contains(guess)) {
                      System.out.println("You already used that letter\n");
                   }
