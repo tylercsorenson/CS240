@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.io.FileNotFoundException;
 import java.lang.StringBuilder;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 public class EvilHangmanGame implements IEvilHangmanGame {
-   Set<String> dictionarySet = new TreeSet<String>();
-   Set<Character> guessesMade = new TreeSet<Character>();
-   Scanner userInput = new Scanner(System.in);
-   int numGuesses = 0;
-   StringBuilder word = new StringBuilder();
+   private Set<String> dictionarySet = new TreeSet<String>();
+   private Set<Character> guessesMade = new TreeSet<Character>();
+   private StringBuilder word = new StringBuilder();
    
    public class EmptyDictionaryFileException extends Exception {
    }
@@ -23,6 +22,38 @@ public class EvilHangmanGame implements IEvilHangmanGame {
    }
    
    public EvilHangmanGame() {
+   }
+   
+   private int GetNumCharInString(String string, char character) {
+      int index = 0;
+      int foundIndex = 0;
+      int count = 0;
+      
+      while (index != -1) {
+         foundIndex = string.indexOf(character, index);
+         if (foundIndex != -1) {
+            count++;
+            index = foundIndex + 1;
+         }
+         else {
+            index = foundIndex;
+         }
+      }
+      
+      return count;
+   }
+   
+   private ArrayList<String> StringToList(String string) {
+      StringBuilder currentString = new StringBuilder();
+      ArrayList<String> result = new ArrayList<String>();
+      
+      Scanner stringScanner = new Scanner(string);
+      stringScanner.useDelimiter(",");
+      
+      while (stringScanner.hasNext()) {
+         result.add(stringScanner.next());
+      }
+      return result;
    }
    
    /**
@@ -39,6 +70,11 @@ public class EvilHangmanGame implements IEvilHangmanGame {
    public void startGame(File dictionary, int wordLength) {      
       try {
          guessesMade.clear();
+         
+         for (int i = 0; i < wordLength; ++i) {
+            word.append('-');
+         }
+         
          LoadDictionary(dictionary);
          
          Iterator<String> iter = dictionarySet.iterator();
@@ -86,6 +122,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
             foundIndex = nextWord.indexOf(guess, index);
             if (foundIndex != -1) {
                key.append(foundIndex);
+               key.append(",");
                index = foundIndex + 1;
             }
             else {
@@ -102,8 +139,26 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          wordGroups.get(key.toString()).add(nextWord);
       }
       
+      for (String key : wordGroups.keySet()) {
+         System.out.println("key: " + key);
+         for (String value : wordGroups.get(key)) {
+            System.out.println(value);
+         }
+      }
+      
       int maxWords = 0;
       Iterator<String> iter = wordGroups.keySet().iterator();
+      
+      // System.out.println("After setting up subsets, before finding one with most words");
+      // while (iter.hasNext()) {
+      //    String nextKey = iter.next();
+      //    System.out.println("key: " + nextKey);
+      //    for (String string : wordGroups.get(nextKey)) {
+      //       System.out.println(string);
+      //    }
+      // }
+      // 
+      // iter = wordGroups.keySet().iterator();
       
       while (iter.hasNext()) {
          String nextKey = iter.next();
@@ -120,11 +175,35 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          }
       }
       
+      // System.out.println("After finding one with most words");
+      // iter = wordGroups.keySet().iterator();
+      // while (iter.hasNext()) {
+      //    String nextKey = iter.next();
+      //    System.out.println("key: " + nextKey);
+      //    for (String string : wordGroups.get(nextKey)) {
+      //       System.out.println(string);
+      //    }
+      // }
+      
+      System.out.println("Number of keys: " + wordGroups.keySet().size());
+      
       if (wordGroups.containsKey("NONE")) {
-         numGuesses--;
          System.out.println("Sorry, there are no " + guess + "\'s");
+         
+         iter = wordGroups.keySet().iterator();
+         String nextKey = iter.next();
+         System.out.println("1!");
+         
+         System.out.println("\"NONE\" subset");
+         for (String string : wordGroups.get("NONE")) {
+            System.out.println(string);
+         }
+         dictionarySet.clear();
+         dictionarySet = wordGroups.get("NONE");
          return wordGroups.get("NONE");
       }
+      
+      
       
       else if (wordGroups.keySet().size() > 1) {
          int minKeyLength = 100;
@@ -132,8 +211,8 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          while (iter.hasNext()) {
             //System.out.println("1");
             String nextKey = iter.next();
-            if (nextKey.length() < minKeyLength) {
-               minKeyLength = nextKey.length();
+            if (GetNumCharInString(nextKey, ',') < minKeyLength) {
+               minKeyLength = GetNumCharInString(nextKey, ',');
             }
          }
          
@@ -141,82 +220,109 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          while (iter.hasNext()) {
             //System.out.println("2");
             String nextKey = iter.next();
-            if (nextKey.length() > minKeyLength) {
+            if (GetNumCharInString(nextKey, ',') > minKeyLength) {
                iter.remove();
             }
          }
          
          int maxRightmostLetter = -1;
-         Set<Integer> positionsExcluded= new TreeSet<Integer>();
+         Set<Integer> positionsExcluded = new TreeSet<Integer>();
          while (wordGroups.keySet().size() > 1) {
-            
-            //System.out.println("3");
             maxRightmostLetter = -1;
-            iter = wordGroups.keySet().iterator();
             
-            while (iter.hasNext()) { //get rightmostLetter (not in excluded set)
+            //determine maxrightmost letter position, not including excluded positions
+            iter = wordGroups.keySet().iterator();
+            while (iter.hasNext()) {
                String nextKey = iter.next();
-               for (int i = nextKey.length() - 1; i >= 0; --i) {
-                  if (!positionsExcluded.contains(nextKey.charAt(i) - '0')) {
-                     if (nextKey.charAt(i) - '0' > maxRightmostLetter) {
-                        maxRightmostLetter = nextKey.charAt(i) - '0';
+               ArrayList<String> stringList = StringToList(nextKey);
+               System.out.println(stringList.size());
+               for (int i = stringList.size() - 1; i >= 0; --i) {
+                  int nextPosition = Integer.parseInt(stringList.get(i));
+                  System.out.println("nextPosition: " + nextPosition);
+                  if (!positionsExcluded.contains(nextPosition)) {
+                     if (nextPosition > maxRightmostLetter) {
+                        //System.out.println("nextPosition: " + nextPosition);
+                        maxRightmostLetter = nextPosition;
                      }
                      break;
                   }
                }
             }
             
+            //for each subset, delete it if it's rightmost letter position is less than the max
             iter = wordGroups.keySet().iterator();
             while (iter.hasNext()) {
                String nextKey = iter.next();
-               for (int i = nextKey.length() - 1; i >= 0; --i) {
-                  if (!positionsExcluded.contains(nextKey.charAt(i) - '0')) {
-                     if (nextKey.charAt(i) - '0' < maxRightmostLetter) {
+               ArrayList<String> stringList = StringToList(nextKey);
+               for (int i = stringList.size() - 1; i >= 0; --i) {
+                  int nextPosition = Integer.parseInt(stringList.get(i));
+                  if (!positionsExcluded.contains(nextPosition)) {
+                     if (nextPosition < maxRightmostLetter) {
                         iter.remove();
                      }
                      break;
                   }
                }
             }
-            positionsExcluded.add(maxRightmostLetter);
-            //for each key, if key's rightmostletter (not in exluded set) is less than max, delete
             
-            //If there is still more than one group, choose the one with the next rightmost letter. Repeat this step (step 4) until a group is chosen.
+            //put the max in the excluded list
+            positionsExcluded.add(maxRightmostLetter);
          }
-         //System.out.println(wordGroups.keySet().size());
-         
+      
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
-         for (int i = 0; i < nextKey.length(); ++i) {
-            word.setCharAt(nextKey.charAt(i) - '0', guess);
+         ArrayList<String> nextKeyList = StringToList(nextKey);
+         for (int i = 0; i < nextKeyList.size(); ++i) {
+            word.setCharAt(Integer.parseInt(nextKeyList.get(i)), guess);
          }
          
          System.out.printf("Yes, there");
-         if (nextKey.length() == 1) {
-            System.out.printf(" is ");
+         if (GetNumCharInString(nextKey, ',') == 1) {
+            System.out.println(" is " + GetNumCharInString(nextKey, ',') + " " + String.valueOf(guess));
          }
          else {
-            System.out.printf(" are ");
+            System.out.println(" are " + GetNumCharInString(nextKey, ',') + " " + String.valueOf(guess) + "\'s");
          }
          
-         System.out.println(nextKey.length() + " " + String.valueOf(guess) + "\'s");
+         
+         
+         System.out.println("2!");
+         for (String string : wordGroups.get(nextKey)) {
+            System.out.println(string);
+         }
+         
+         
+         
+         dictionarySet.clear();
+         dictionarySet = wordGroups.get(nextKey);
          return wordGroups.get(nextKey);
       }
       
       else {
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
-         for (int i = 0; i < nextKey.length(); ++i) {
-            word.setCharAt(nextKey.charAt(i) - '0', guess);
-         }
-         System.out.printf("Yes, there");
-         if (nextKey.length() == 1) {
-            System.out.println(" is " + nextKey.length() + " " + String.valueOf(guess));
-         }
-         else {
-            System.out.println(" are " + nextKey.length() + " " + String.valueOf(guess) + "\'s");
+         ArrayList<String> nextKeyList = StringToList(nextKey);
+         for (int i = 0; i < nextKeyList.size(); ++i) {
+            word.setCharAt(Integer.parseInt(nextKeyList.get(i)), guess);
          }
          
+         System.out.printf("Yes, there");
+         if (GetNumCharInString(nextKey, ',') == 1) {
+            System.out.println(" is " + GetNumCharInString(nextKey, ',') + " " + String.valueOf(guess));
+         }
+         else {
+            System.out.println(" are " + GetNumCharInString(nextKey, ',') + " " + String.valueOf(guess) + "\'s");
+         }
+         
+         
+         System.out.println("3!");
+         for (String string : wordGroups.get(nextKey)) {
+            System.out.println(string);
+         }
+         
+         
+         dictionarySet.clear();
+         dictionarySet = wordGroups.get(nextKey);
          return wordGroups.get(nextKey);
       }
    }
@@ -243,87 +349,15 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       dictionaryInput.close();
    }
    
-   public void NextTurn() {
-      char guess = ' ';
-      
-      if (numGuesses == 1) {
-         System.out.println("You have " + numGuesses + " guess left");
-      }
-      else {
-         System.out.println("You have " + numGuesses + " guesses left");
-      }
-      System.out.printf("Used letters: ");
-      for (Character character : guessesMade) {
-         System.out.printf(character + " ");
-      }
-      System.out.println("\nWord: " + word.toString());
-      
-      boolean badInput = true;
-      String badInputString = new String();
-      
-      do {
-         System.out.printf("Enter guess: ");
-         if (userInput.hasNext("[a-zA-Z]")) {
-            guess = userInput.next().charAt(0);
-            if (guessesMade.contains(guess)) {
-               System.out.println("You already used that letter\n");
-            }
-            else {
-               badInput = false;
-            }
-         }
-         else {
-            badInputString = userInput.nextLine();
-            System.out.println("Invalid input");
-            System.out.println();
-         }
-      } while (badInput);
-      
-      try {
-         /*
-         System.out.println("Original");
-         for (String Word : dictionarySet) {
-         System.out.println(Word);
-      }
-      */
-      dictionarySet = makeGuess(guess);
-      // for (String nextWord : dictionarySet) {
-      //    System.out.println(nextWord);
-      // }
-      
-      /*
-      System.out.println("\nChanged");
-      for (String Word : dictionarySet) {
-      System.out.println(Word);
-   }
-   */
-}
-catch (GuessAlreadyMadeException e) {
-   System.out.println("You already made that guess...");
-}
-
-System.out.println();
-}
-
-public void RunGame(int wordLength, int numberOfGuesses) {
-   numGuesses = numberOfGuesses;
-   
-   for (int i = 0; i < wordLength; ++i) {
-      word.append('-');
+   public String GetWord() {
+      return word.toString();
    }
    
-   while (numGuesses > 0) {
-      NextTurn();
+   public Set<Character> GetGuessesMade() {
+      return guessesMade;
    }
-   if (word.indexOf("-") == -1) {
-      System.out.println("You Win!");
-      System.out.println(word);
+   
+   public Set<String> GetDictionarySet() {
+      return dictionarySet;
    }
-   else {
-      System.out.println("You lose!");
-      Iterator<String> iter = dictionarySet.iterator();
-      String result = iter.next();
-      System.out.println("The word was: " + result);
-   }
-}
 }
