@@ -115,14 +115,14 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       int foundIndex = 0;
       
       for (String nextWord : dictionarySet) {
-         System.out.println("nextWord: " + nextWord);
+         //System.out.println("nextWord: " + nextWord);
          index = 0;
          foundIndex = 0;
          StringBuilder key = new StringBuilder();
          
          while (index != -1) {
             foundIndex = nextWord.indexOf(guess, index);
-            System.out.println("foundIndex: " + foundIndex);
+            //System.out.println("foundIndex: " + foundIndex);
             if (foundIndex != -1) {
                key.append(foundIndex);
                key.append(",");
@@ -142,12 +142,12 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          wordGroups.get(key.toString()).add(nextWord);
       }
       
-      for (String key : wordGroups.keySet()) {
-         System.out.println("key: " + key);
-         for (String value : wordGroups.get(key)) {
-            System.out.println(value);
-         }
-      }
+      // for (String key : wordGroups.keySet()) {
+      //    System.out.println("key: " + key);
+      //    for (String value : wordGroups.get(key)) {
+      //       System.out.println(value);
+      //    }
+      // }
       
       int maxWords = 0;
       Iterator<String> iter = wordGroups.keySet().iterator();
@@ -184,23 +184,23 @@ public class EvilHangmanGame implements IEvilHangmanGame {
       //    String nextKey = iter.next();
       //    System.out.println("key: " + nextKey);
       //    for (String string : wordGroups.get(nextKey)) {
-      //       System.out.println(string);
+      //       g.println(string);
       //    }
       // }
       
-      System.out.println("Number of keys: " + wordGroups.keySet().size());
+      //System.out.println("Number of keys: " + wordGroups.keySet().size());
       
       if (wordGroups.containsKey("NONE")) {
          System.out.println("Sorry, there are no " + guess + "\'s");
          
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
-         System.out.println("1!");
-         
-         System.out.println("\"NONE\" subset");
-         for (String string : wordGroups.get("NONE")) {
-            System.out.println(string);
-         }
+         // System.out.println("1!");
+         // 
+         // System.out.println("\"NONE\" subset");
+         // for (String string : wordGroups.get("NONE")) {
+         //    System.out.println(string);
+         // }
          dictionarySet.clear();
          dictionarySet = wordGroups.get("NONE");
          return wordGroups.get("NONE");
@@ -238,10 +238,10 @@ public class EvilHangmanGame implements IEvilHangmanGame {
             while (iter.hasNext()) {
                String nextKey = iter.next();
                ArrayList<String> stringList = StringToList(nextKey);
-               System.out.println(stringList.size());
+               //System.out.println(stringList.size());
                for (int i = stringList.size() - 1; i >= 0; --i) {
                   int nextPosition = Integer.parseInt(stringList.get(i));
-                  System.out.println("nextPosition: " + nextPosition);
+                  //System.out.println("nextPosition: " + nextPosition);
                   if (!positionsExcluded.contains(nextPosition)) {
                      if (nextPosition > maxRightmostLetter) {
                         //System.out.println("nextPosition: " + nextPosition);
@@ -271,7 +271,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
             //put the max in the excluded list
             positionsExcluded.add(maxRightmostLetter);
          }
-      
+         
          iter = wordGroups.keySet().iterator();
          String nextKey = iter.next();
          ArrayList<String> nextKeyList = StringToList(nextKey);
@@ -289,10 +289,10 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          
          
          
-         System.out.println("2!");
-         for (String string : wordGroups.get(nextKey)) {
-            System.out.println(string);
-         }
+         // System.out.println("2!");
+         // for (String string : wordGroups.get(nextKey)) {
+         //    System.out.println(string);
+         // }
          
          
          
@@ -318,10 +318,10 @@ public class EvilHangmanGame implements IEvilHangmanGame {
          }
          
          
-         System.out.println("3!");
-         for (String string : wordGroups.get(nextKey)) {
-            System.out.println(string);
-         }
+         // System.out.println("3!");
+         // for (String string : wordGroups.get(nextKey)) {
+         //    System.out.println(string);
+         // }
          
          
          dictionarySet.clear();

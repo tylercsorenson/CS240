@@ -35,7 +35,9 @@ public class Main {
                throw new EmptyDictionarySetException();
             }
             word = hangman.GetWord();
-            
+            if (word.indexOf('-') == -1) {
+               break;
+            }
             char guess = ' ';
             
             if (numGuesses == 1) {
