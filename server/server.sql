@@ -33,6 +33,6 @@ create table events (
 	longitude real not null,
 	country text not null,
 	city text not null,
-	eventType text check (eventType="birth" or eventType="baptism" or eventType="christening" or eventType="marriage" or eventType="death"),
+	eventType text not null,
 	year integer not null
 );
