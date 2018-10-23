@@ -4,6 +4,14 @@ import java.util.Set;
 
 /** Class that contains a set of all the events */
 public class EventDao {
+   
+   // 1. adding a new event into the database
+   // 2. removing a event from the database
+   // removing many events from the database
+   // 3. adding many events into the database
+   // 4. retrieving a event from the database
+   // 5. retrieving many events from the database
+   
    /** Set of all the events */
    private Set<model.Event> events;
    

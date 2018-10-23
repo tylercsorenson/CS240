@@ -4,6 +4,16 @@ import java.util.Set;
 
 /** Class that contains a set of all the persons */
 public class PersonDao {
+   
+   
+   // 1. adding a new person into the database
+   // 2. removing a person from the database
+   // 3. removing many people from the database
+   // 3. adding many people into the database
+   // 4. retrieving a person from the database
+   // 5. retrieving many people from the database
+   
+   
    /** Set of all the persons */
    private Set<model.Person> persons;
    

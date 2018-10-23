@@ -1,27 +1,29 @@
 package dao;
 
-import java.util.Set;
+import java.util.ArrayList;
 
 /** Class that contains a set of all the authentication tokens */
 public class AuthTokenDao {
-   /** Set of all the tokens */
-   private Set<model.AuthToken> authTokens;
-   
    /** Default constructor */
    public AuthTokenDao() {}
    
-   /** Parameterized constructor
-    * @param authTokens Set of tokens to be put in the object
+   /**  Adds a token to the database
+    * @param newToken The token to add to the database
     */
-   public AuthTokenDao(Set<model.AuthToken> authTokens) {}
+   public void addToken(model.AuthToken newToken) {}
    
-   /** Sets a new set of tokens
-    * @param authTokens New set of tokens to be put in the object
+   /** Removes a token from the database
+    * @param tokenToRemove The token to remove from the database
     */
-   public void setTokens(Set<model.AuthToken> authTokens) {}
+   public void removeToken(model.AuthToken tokenToRemove) {}
    
-   /** Returns the set of tokens
-    * @return The set of tokens
+   /** Removes a specified number of tokens from the database
+    * @param tokenList List of tokens to remove, if the list is empty all the tokens in the database are removed
     */
-   public Set<model.AuthToken> getTokens() {return authTokens;}
+   public void removeManyTokens(ArrayList<model.AuthToken> tokenList) {}
+   
+   /** Retrieves the specified token from the database
+    * @param tokenValue The value of the token to retrieve
+    */
+   public model.AuthToken retrieveToken(String tokenValue) {return null;}
 }

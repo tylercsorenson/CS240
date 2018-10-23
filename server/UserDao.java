@@ -4,6 +4,13 @@ import java.util.Set;
 
 /** Class that contains a set of all the authentication users */
 public class UserDao {
+   
+   // 1. adding a new user into the database
+   // adding many users into the database
+   // 2. removing a user from the database
+   // removing many users from the database
+   // 4. retrieving a user from the database
+   
    /** Set of all the users */
    private Set<model.User> users;
    
