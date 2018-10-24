@@ -4,32 +4,38 @@ import java.util.Set;
 
 /** Class that contains a set of all the events */
 public class EventDao {
-   
-   // 1. adding a new event into the database
-   // 2. removing a event from the database
-   // removing many events from the database
-   // 3. adding many events into the database
-   // 4. retrieving a event from the database
-   // 5. retrieving many events from the database
-   
-   /** Set of all the events */
-   private Set<model.Event> events;
-   
    /** Default constructor */
    public EventDao() {}
       
-   /** Parameterized constructor
-    * @param events Set of events to be put in the object
+   /** Adds an event to the database
+    * @param newEvent The event to add to the database
     */
-   public EventDao(Set<model.Event> events) {}
-      
-   /** Sets a new set of tokens
-    * @param events new set of events to be put in the object
+   public void addEvent(model.Event newEvent) {}
+   
+   /** Removes an event from the database
+    * @param eventToRemove The event to remove from the database
     */
-   public void setEvents(Set<model.Event> events) {}
-      
-   /** Returns the set of events
-    * @return The set of events
+   public void removeEvent(model.Event eventToRemove) {}
+   
+   /** Removes multiple events from the database
+    * @param eventSet Set of events to remove from the database, if the set is empty all the events in the database are removed
     */
-   public Set<model.Event> getEvents() {return events;}
+   public void removeMultiplePeople(Set<model.Event> eventSet) {}
+   
+   /** Adds multiple events to the database
+    * @param eventSet Set of events to add to the database
+    */
+   public void addMultiplePeople(Set<model.Event> eventSet) {}
+   
+   /** Retrieves a single event from the database
+    * @param eventID The ID number of the event to retrieve
+    * @return The event retrieved from the database
+    */
+   public model.Event retrieveEvent(String eventID) {return null;}
+   
+   /** Retrieves multiple events from the database
+    * @param IDSet Set of ID numbers corresponding to the events to retrieve
+    * @return The set of events specified
+    */
+   public Set<model.Event> retrieveMultiplePeople(Set<String> IDSet) {return null;}
 }
