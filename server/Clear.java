@@ -8,5 +8,7 @@ public class Clear {
    /** Clears the data from the database
     * @return The result of the execution
     */
-   public response.ClearResponse clear() {return null;}   
+   public response.ClearResponse clear() {
+      return null;
+   }   
 }

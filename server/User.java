@@ -28,75 +28,111 @@ public class User {
     * @param gender Gender of the user, either "m" of "f"
     * @param personID ID number of the user
     */
-   public User(String userName, String password, String email, String firstName, String lastName, String gender, String personID) {}
+   public User(String userName, String password, String email, String firstName, String lastName, String gender, String personID) {
+      this.userName = userName;
+      this.password = password;
+      this.email = email;
+      this.firstName = firstName;
+      this.lastName = lastName;
+      this.gender = gender;
+      this.personID = personID;
+   }
    
    /** Sets a new user name
     * @param userName new user name to be put in the object
     */
-   public void setUserName(String userName) {}
+   public void setUserName(String userName) {
+      this.userName = userName;
+   }
       
    /** Sets a new password
     * @param password new password to be put in the object
     */
-   public void setPassword(String password) {}
+   public void setPassword(String password) {
+      this.password = password;
+   }
       
    /** Sets a new E-mail
     * @param email new E-mail to be put in the object
     */
-   public void setEmail(String email) {}
+   public void setEmail(String email) {
+      this.email = email;
+   }
       
    /** Sets a new first name
     * @param firstName new first name to be put in the object
     */
-   public void setFirstName(String firstName) {}
+   public void setFirstName(String firstName) {
+      this.firstName = firstName;
+   }
       
    /** Sets a new last name
     * @param lastName new last name to be put in the object
     */
-   public void setLastName(String lastName) {}
+   public void setLastName(String lastName) {
+      this.lastName = lastName;
+   }
       
    /** Sets a new gender
     * @param gender new gender to be put in the object
     */
-   public void setGender(String gender) {}
+   public void setGender(String gender) {
+      this.gender = gender;
+   }
       
    /** Sets a new ID number
     * @param personID new ID number to be put in the object
     */
-   public void setPersonID(String personID) {}
+   public void setPersonID(String personID) {
+      this.personID = personID;
+   }
       
    /** Returns the user name
     * @return The user name
     */
-   public String getUserName() {return userName;}
+   public String getUserName() {
+      return userName;
+   }
       
    /** Returns the password
     * @return The password
     */
-   public String getPassword() {return password;}
+   public String getPassword() {
+      return password;
+   }
       
    /** Returns the E-mail
     * @return The E-mail
     */
-   public String getEmail() {return email;}
+   public String getEmail() {
+      return email;
+   }
    
    /** Returns the first name
     * @return The first name
     */
-   public String getFirstName() {return firstName;}
+   public String getFirstName() {
+      return firstName;
+   }
       
    /** Returns the last name
     * @return The last name
     */
-   public String getLastName() {return lastName;}
+   public String getLastName() {
+      return lastName;
+   }
       
    /** Returns the gender
     * @return The gender
     */
-   public String getGender() {return gender;}
+   public String getGender() {
+      return gender;
+   }
       
    /** Returns the ID Number
     * @return The ID Number
     */
-   public String getPersonID() {return personID;}
+   public String getPersonID() {
+      return personID;
+   }
 }

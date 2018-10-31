@@ -9,8 +9,8 @@ create table users (
 );
 
 create table tokens (
-	userName text not null primary key,
-	authToken text not null,
+	authToken text not null primary key,
+	userName text not null,
 	personID text not null
 );
 
